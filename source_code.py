@@ -9,22 +9,10 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-# In[2]:
-
-
-pip install -U datasets
-
-
-# In[3]:
-
-
-pip --version
-
-
 # In[4]:
 
 
-get_ipython().system('pip install torch_optimizer numpy torch transformers evaluate python-whois --quiet')
+#get_ipython().system('pip install torch_optimizer numpy torch transformers evaluate python-whois --quiet')
 
 
 # In[5]:
@@ -63,7 +51,9 @@ import os
 # In[6]:
 
 
-df = pd.read_csv('D:\malicious_phish\malicious_phish.csv')
+#df = pd.read_csv("data", "malicious_phish.csv")
+import os
+df = pd.read_csv(os.path.join("data", "malicious_phish.csv"))
 
 
 # In[7]:
@@ -206,7 +196,7 @@ dataset
 # In[19]:
 
 
-get_ipython().system('pip install huggingface_hub')
+#get_ipython().system('pip install huggingface_hub')
 
 
 # In[20]:
@@ -432,7 +422,7 @@ df_train
 # In[40]:
 
 
-get_ipython().system('pip install tld')
+#get_ipython().system('pip install tld')
 
 
 # In[41]:
@@ -549,10 +539,13 @@ y_test = df_test['labels']
 # In[53]:
 
 
-X_train.to_csv('D:\malicious_phish/x-train.csv')
-y_train.to_csv('D:\malicious_phish/y-train.csv')
-X_test.to_csv('D:\malicious_phish/x-test.csv')
-y_test.to_csv('D:\malicious_phish/y-test.csv')
+import os
+os.makedirs("outputs", exist_ok=True)
+
+X_train.to_csv("outputs/x-train.csv", index=False)
+y_train.to_csv("outputs/y-train.csv", index=False)
+X_test.to_csv("outputs/x-test.csv", index=False)
+y_test.to_csv("outputs/y-test.csv", index=False)
 
 
 # In[54]:
@@ -915,7 +908,7 @@ print(type(X_test))  # pandas DataFrame olup olmadığını kontrol et
 
 import seaborn as sns
 import matplotlib.pyplot as plt
-get_ipython().run_line_magic('matplotlib', 'inline')
+#get_ipython().run_line_magic('matplotlib', 'inline')
 def plot_feature_importance():
     tmp = pd.DataFrame({'Feature': X_test.columns, 'Feature importance': feature_dataframe['mean'].values})
     tmp = tmp.sort_values(by='Feature importance',ascending=False).head(20)
@@ -1691,7 +1684,7 @@ print(feature_df)
 # In[145]:
 
 
-get_ipython().system('pip install pyswarms')
+#get_ipython().system('pip install pyswarms')
 
 
 # In[150]:
@@ -2244,7 +2237,7 @@ print(feature_df_hho)
 # In[216]:
 
 
-get_ipython().system('pip install pytorch_tabnet')
+#get_ipython().system('pip install pytorch_tabnet')
 
 
 # In[223]:
@@ -2422,10 +2415,6 @@ feature_df = feature_df.sort_values(by="Importance", ascending=False)
 print(feature_df)
 
 
-# In[255]:
-
-
-pip install autogluon[all]
 
 
 # In[256]:
@@ -2457,7 +2446,6 @@ print("Model kayıt yolu:", save_path)  # Model kaydedilecek yol
 # In[262]:
 
 
-pip install --upgrade numpy
 
 
 # In[267]:
