@@ -23,6 +23,8 @@ from datasets import Dataset
 import pandas as pd
 import seaborn as sns
 import numpy as np
+#commit
+np.random.seed(42)
 import matplotlib.pyplot as plt
 
 # Import label encoder
