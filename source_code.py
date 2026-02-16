@@ -1493,7 +1493,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 # 📌 Veriyi yükle (Önceden yüklenmiş olduğunu varsayıyoruz)
-X_train_selected, X_val, y_train_selected, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
+X_train_selected, X_val, y_train_selected, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42, stratify=y_train)
 
 # 📌 Genetik Algoritma için fitness fonksiyonu
 def evaluate(individual):
