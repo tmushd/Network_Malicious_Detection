@@ -1695,7 +1695,8 @@ print(feature_df)
 import numpy as np
 import pyswarms as ps
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report
+
 
 # 🔍 PSO için değerlendirme fonksiyonu
 def fitness_function(feature_subset):
@@ -1714,6 +1715,8 @@ def fitness_function(feature_subset):
     clf = RandomForestClassifier(n_estimators=50, random_state=42)
     clf.fit(X_train_selected, y_train)
     y_pred = clf.predict(X_test_selected)
+    #commit
+    print(classification_report(y_test, y_pred))
     accuracy = accuracy_score(y_test, y_pred)
 
     return 1 - accuracy  # Hata oranı daha düşükse daha iyi
