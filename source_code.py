@@ -466,14 +466,10 @@ df_train
 
 
 # In[43]:
-
-
 def digit_count(url):
-    digits = 0
-    for i in url:
-        if i.isnumeric():
-            digits = digits + 1
-    return digits
+    return sum(c.isnumeric() for c in url)
+
+
 
 df_train['count-digits']= df_train['url'].apply(lambda i: digit_count(i))
 df_test['count-digits']= df_test['url'].apply(lambda i: digit_count(i))
