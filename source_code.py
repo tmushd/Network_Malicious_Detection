@@ -719,7 +719,7 @@ eval_df.loc[len(eval_df)] = new_eval
 # In[72]:
 
 
-CM=confusion_matrix(y_test,y_predXGB,labels=[0,1,2,3])
+cm = confusion_matrix(y_test, y_predXGB, labels=[0,1,2,3])
 
 plot_confusion_matrix(cm,classes=['benign', 'defacement','phishing','malware'])
 
