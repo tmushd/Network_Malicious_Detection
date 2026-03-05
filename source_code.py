@@ -47,14 +47,13 @@ import time
 from bs4 import BeautifulSoup
 import urllib
 import bs4
-import os
 
 
 # In[6]:
 
 
 #df = pd.read_csv("data", "malicious_phish.csv")
-import os
+
 df = pd.read_csv(os.path.join("data", "malicious_phish.csv"))
 
 
@@ -541,7 +540,6 @@ y_test = df_test['labels']
 # In[53]:
 
 
-import os
 os.makedirs("outputs", exist_ok=True)
 
 X_train.to_csv("outputs/x-train.csv", index=False)
@@ -2443,7 +2441,6 @@ test_data = TabularDataset(test_data)
 # In[266]:
 
 
-import os
 print("Çalışma dizini:", os.getcwd())  # Çalışma dizini
 print("Model kayıt yolu:", save_path)  # Model kaydedilecek yol
 
@@ -2457,8 +2454,6 @@ print("Model kayıt yolu:", save_path)  # Model kaydedilecek yol
 
 
 import time
-
-import os
 
 # Modeli kaydetmek için bir klasör belirleyelim
 save_path = os.path.abspath(r"C:\Users\drikm/")
