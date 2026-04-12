@@ -1,0 +1,15 @@
+{
+  "dataset_name": "bgspaditya/byt-mal-minpro",
+  "electra_model": "bgspaditya/malurl-electra",
+  "generated_at": "2026-04-12T11:24:40.809236",
+  "metrics_rows": 8,
+  "runtime_seconds": 103.13,
+  "seed": 42,
+  "tasks": [
+    "multiclass",
+    "binary"
+  ],
+  "test_size": 1500,
+  "train_size": 5000,
+  "val_size": 800
+}
