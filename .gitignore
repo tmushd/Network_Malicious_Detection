@@ -2,3 +2,5 @@
 # ignore datasets and generated outputs
 data/
 outputs/
+__pycache__/
+*.pyc
