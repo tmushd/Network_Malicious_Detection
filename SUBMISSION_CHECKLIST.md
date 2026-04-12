@@ -44,6 +44,12 @@ git commit -m "Add modular reproducibility platform and proof artifacts"
 gh repo create <your-username>/Network_Malicious_Detection_340W --public --source=. --remote=student-origin --push
 ```
 
+Or use the helper script:
+
+```bash
+./scripts/publish_public_repo.sh <your-username> Network_Malicious_Detection_340W
+```
+
 Then submit:
 
 - [ ] Public GitHub URL in Canvas.
@@ -60,4 +66,3 @@ python3 scripts/reproduce.py \
   --electra-device cpu \
   --output-dir outputs/repro_submission_safe
 ```
-
