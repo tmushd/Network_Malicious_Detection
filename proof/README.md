@@ -32,3 +32,14 @@ python3 scripts/reproduce.py \
 - `confusion_binary_LGBM.png`
 - `confusion_binary_RF.png`
 - `confusion_binary_XGB.png`
+
+## Week 12 novelty evidence
+
+The repo also includes a Week 12 enhancement run under:
+
+- `week12_novelty/week12_metrics.csv`
+- `week12_novelty/week12_comparison.csv`
+- `week12_novelty/week12_report.md`
+- `week12_novelty/confusion_binary_hybrid_fusion.png`
+
+This novelty run adds a new `HYBRID_FUSION` block that combines Random Forest lexical probabilities with pretrained ELECTRA probabilities.

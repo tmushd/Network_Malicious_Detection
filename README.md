@@ -22,6 +22,9 @@ It is structured so you can easily replace model blocks (e.g., swap `ELECTRA` wi
   - paper-vs-reproduced comparison CSV
   - confusion matrix figures
   - markdown reproducibility report
+- Week 12 enhancement:
+  - `HYBRID_FUSION` block that combines `RF` lexical probabilities with `ELECTRA` probabilities
+  - comparison table for the novelty run
 
 ## Repository structure
 
@@ -33,6 +36,7 @@ src/network_malicious_detection/
   features.py                            # Modular lexical feature engineering
   models.py                              # Classical model training/eval
   electra_eval.py                        # ELECTRA evaluation module
+  hybrid_fusion.py                       # Week 12 hybrid RF + ELECTRA fusion block
   metrics.py                             # Shared metric helpers
   reporting.py                           # Confusion matrix + reports
 outputs/reproducibility/                 # Generated proof artifacts
@@ -84,6 +88,29 @@ python3 scripts/reproduce.py --max-workers 2
 # Skip ELECTRA if you only want classical baselines
 python3 scripts/reproduce.py --skip-electra
 ```
+
+## Week 12 novelty run
+
+This repo now includes a separate Week 12 enhancement that adds a new modular block:
+
+- `HYBRID_FUSION`: a logistic-regression meta-model trained on validation data using:
+  - Random Forest lexical malicious probability
+  - pretrained ELECTRA malicious probability
+
+Run it like this:
+
+```bash
+python3 scripts/run_week12_novelty.py --offline --output-dir proof/week12_novelty
+```
+
+Key Week 12 outputs:
+
+- `proof/week12_novelty/week12_metrics.csv`
+- `proof/week12_novelty/week12_comparison.csv`
+- `proof/week12_novelty/week12_report.md`
+- `proof/week12_novelty/confusion_binary_hybrid_fusion.png`
+
+In the captured novelty run, both `ELECTRA` and `HYBRID_FUSION` reached `0.9933` binary accuracy on the held-out subset, which is slightly above the parent paper's `0.99` binary accuracy target.
 
 ## Parent paper reference metrics used for comparison
 
