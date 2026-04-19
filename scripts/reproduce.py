@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sys
 import time
@@ -47,6 +48,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--skip-baselines", action="store_true")
     parser.add_argument("--skip-electra", action="store_true")
     parser.add_argument("--output-dir", default=str(ROOT / "outputs" / "reproducibility"))
+    parser.add_argument(
+        "--no-print-json",
+        action="store_false",
+        dest="print_json",
+        help="Disable printing a JSON summary to stdout at the end of the run.",
+    )
+    parser.set_defaults(print_json=True)
     return parser.parse_args()
 
 
@@ -146,6 +154,7 @@ def main() -> None:
                         "f1_weighted": metrics["f1_weighted"],
                         "f1_macro": metrics["f1_macro"],
                         "eval_rows": len(task_splits.test),
+                        "device": None,
                     }
                 )
                 save_confusion_matrix(
@@ -218,6 +227,26 @@ def main() -> None:
     if not comparison_df.empty:
         print(f"Saved comparison: {output_dir / 'paper_comparison.csv'}")
     print(f"Saved report: {output_dir / 'reproducibility_report.md'}")
+
+    if args.print_json:
+        def _df_records(df: pd.DataFrame) -> list[dict]:
+            if df.empty:
+                return []
+            safe = df.astype(object).where(pd.notnull(df), None)
+            return safe.to_dict(orient="records")
+
+        summary = {
+            "run_metadata": run_metadata,
+            "artifacts": {
+                "metrics_csv": str(output_dir / "metrics.csv"),
+                "paper_comparison_csv": str(output_dir / "paper_comparison.csv"),
+                "reproducibility_report_md": str(output_dir / "reproducibility_report.md"),
+                "run_metadata_json": str(output_dir / "run_metadata.json"),
+            },
+            "metrics": _df_records(metrics_df),
+            "paper_comparison": _df_records(comparison_df),
+        }
+        print("\n" + json.dumps(summary, indent=2, allow_nan=False))
 
 
 if __name__ == "__main__":

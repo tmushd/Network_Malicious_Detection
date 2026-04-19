@@ -101,6 +101,10 @@ Notes:
 python scripts/reproduce.py --task both --train-size 2000 --val-size 300 --test-size 500 --electra-eval-size 200 --max-workers 2 --seed 42 --output-dir outputs/reproducibility
 ```
 
+Terminal output:
+- The script prints a JSON summary at the end (metrics + artifact paths).
+- To disable JSON printing (e.g., for scripting), add `--no-print-json`.
+
 ### 4) Reproduce our run (exact command + code version)
 
 Code version (commit): `24af7509b4098dd4bd0d03fe95aaaeb163041b7f`
