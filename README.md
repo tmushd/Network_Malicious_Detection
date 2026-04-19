@@ -94,6 +94,7 @@ Notes:
 - Seeds are fixed (`--seed 42`), but some ML libraries can still show tiny metric differences across hardware/OS.
 - Optional: install the extra baselines (XGBoost + LightGBM) with `pip install -r requirements_full.txt`.
 - On some macOS Apple Silicon setups, `lightgbm`/`xgboost` can crash (native segfault). The pipeline will warn and skip those baselines so the run still completes (RF + ELECTRA still run).
+- If you see an error mentioning `libomp` / `lightgbm`, you are using the optional baselines or an old virtualenv: create a fresh `.venv` and install only `requirements.txt` (or run `pip uninstall -y lightgbm xgboost`).
 
 ### 3) Quick run (downsized, single command)
 
