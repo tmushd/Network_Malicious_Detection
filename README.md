@@ -1,131 +1,69 @@
-# Network_Malicious_Detection (Modular Reproducibility Platform)
+# Network Malicious Detection
 
-This repository is now a **fully runnable and modular implementation platform** for reproducing results from:
+## Repo
 
-**Türk & Kılıçaslan (2025), _Malicious URL Detection with Advanced Machine Learning and Optimization-Supported Deep Learning Models_ (ELECTRA paper).**
+Reproducible pipeline for the malicious URL detection results in:
+Türk & Kılıçaslan (2025), *Malicious URL Detection with Advanced Machine Learning and Optimization-Supported Deep Learning Models*.
 
-It is structured so you can easily replace model blocks (e.g., swap `ELECTRA` with your own method) without rewriting the whole pipeline.
+What’s in here:
+- Tasks: `binary` + `multiclass` malicious URL detection
+- Baselines (lexical URL features): `RF`, `XGB`, `LGBM`
+- Transformer checkpoint evaluation: ELECTRA (`bgspaditya/malurl-electra`)
+- Default dataset source: Hugging Face `bgspaditya/byt-mal-minpro` (downloaded on first run)
+- Main entrypoint: `scripts/reproduce.py` (writes all artifacts to `outputs/reproducibility/`)
 
-## What this implementation gives you
+## Run
 
-- Reproducible pipeline for:
-  - `multiclass` malicious URL detection
-  - `binary` malicious URL detection
-- Classical baselines (from lexical URL features):
-  - `LGBM`
-  - `XGB`
-  - `RF`
-- ELECTRA reproduction via checkpoint evaluation:
-  - default model: `bgspaditya/malurl-electra`
-- Automatic proof artifacts:
-  - metrics CSV
-  - paper-vs-reproduced comparison CSV
-  - confusion matrix figures
-  - markdown reproducibility report
-- Week 12 enhancement:
-  - `HYBRID_FUSION` block that combines `RF` lexical probabilities with `ELECTRA` probabilities
-  - comparison table for the novelty run
-
-## Repository structure
-
-```text
-scripts/reproduce.py                     # Main CLI for experiments
-src/network_malicious_detection/
-  constants.py                           # Paper target metrics + label order
-  data.py                                # Dataset loading + task label prep
-  features.py                            # Modular lexical feature engineering
-  models.py                              # Classical model training/eval
-  electra_eval.py                        # ELECTRA evaluation module
-  hybrid_fusion.py                       # Week 12 hybrid RF + ELECTRA fusion block
-  metrics.py                             # Shared metric helpers
-  reporting.py                           # Confusion matrix + reports
-outputs/reproducibility/                 # Generated proof artifacts
-```
-
-## Dataset
-
-Default dataset source:
-- Hugging Face: `bgspaditya/byt-mal-minpro`
-
-This maps to the same malicious URL benchmark family used in the paper and includes train/val/test splits.
-
-## Quick start
-
-1. Install dependencies:
+### 1) Clone
 
 ```bash
+git clone https://github.com/tmushd/Network_Malicious_Detection.git
+cd Network_Malicious_Detection
+```
+
+### 2) Environment setup (macOS)
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip
 pip install -r requirements.txt
 ```
 
-2. Run the default **safe profile** (small slices + low CPU pressure):
+### 2) Environment setup (Windows PowerShell)
 
-```bash
-python3 scripts/reproduce.py
+```powershell
+py -m venv .venv
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\.venv\Scripts\Activate.ps1
+py -m pip install -U pip
+pip install -r requirements.txt
 ```
 
-3. Key outputs:
+Notes:
+- First run requires internet (downloads the dataset and the pretrained ELECTRA checkpoint from Hugging Face).
+- If `torch` fails to install from `requirements.txt`, install PyTorch first (per your CPU/GPU) and then re-run `pip install -r requirements.txt`.
+- Seeds are fixed (`--seed 42`), but some ML libraries can still show tiny metric differences across hardware/OS.
 
-- `outputs/reproducibility/metrics.csv`
-- `outputs/reproducibility/paper_comparison.csv`
-- `outputs/reproducibility/reproducibility_report.md`
-- `outputs/reproducibility/confusion_*.png`
-
-## Useful run options
+### 3) Quick run (downsized, single command)
 
 ```bash
-# Only multiclass
-python3 scripts/reproduce.py --task multiclass
-
-# Only binary
-python3 scripts/reproduce.py --task binary
-
-# Faster run (smaller splits)
-python3 scripts/reproduce.py --train-size 80000 --test-size 10000 --electra-eval-size 3000
-
-# Control CPU usage
-python3 scripts/reproduce.py --max-workers 2
-
-# Skip ELECTRA if you only want classical baselines
-python3 scripts/reproduce.py --skip-electra
+python scripts/reproduce.py --task both --train-size 2000 --val-size 300 --test-size 500 --electra-eval-size 200 --max-workers 2 --seed 42 --output-dir outputs/reproducibility
 ```
 
-## Week 12 novelty run
+### 4) Reproduce our run (exact command + code version)
 
-This repo now includes a separate Week 12 enhancement that adds a new modular block:
-
-- `HYBRID_FUSION`: a logistic-regression meta-model trained on validation data using:
-  - Random Forest lexical malicious probability
-  - pretrained ELECTRA malicious probability
-
-Run it like this:
+Code version (commit): `24af7509b4098dd4bd0d03fe95aaaeb163041b7f`
 
 ```bash
-python3 scripts/run_week12_novelty.py --offline --output-dir proof/week12_novelty
+python scripts/reproduce.py --dataset-name bgspaditya/byt-mal-minpro --task both --train-size 8000 --val-size 1000 --test-size 2000 --electra-eval-size 500 --electra-model bgspaditya/malurl-electra --electra-batch-size 128 --electra-max-length 128 --electra-device auto --max-workers 4 --seed 42 --output-dir outputs/reproducibility
 ```
 
-Key Week 12 outputs:
+### Outputs
 
-- `proof/week12_novelty/week12_metrics.csv`
-- `proof/week12_novelty/week12_comparison.csv`
-- `proof/week12_novelty/week12_report.md`
-- `proof/week12_novelty/confusion_binary_hybrid_fusion.png`
-
-In the captured novelty run, both `ELECTRA` and `HYBRID_FUSION` reached `0.9933` binary accuracy on the held-out subset, which is slightly above the parent paper's `0.99` binary accuracy target.
-
-## Parent paper reference metrics used for comparison
-
-The code compares reproduced metrics against the paper's reported values for:
-- `LGBM`
-- `XGB`
-- `RF`
-- `ELECTRA`
-
-for both `multiclass` and `binary` scenarios.
-
-## Notes for coursework deliverable
-
-If your assignment asks for public GitHub evidence:
-1. Run `scripts/reproduce.py`.
-2. Commit generated artifacts in `outputs/reproducibility/`.
-3. Push to a public GitHub repo.
-4. Share the repo URL as the reproducibility proof.
+After either run completes, look in `outputs/reproducibility/`:
+- `metrics.csv`
+- `paper_comparison.csv`
+- `reproducibility_report.md`
+- `run_metadata.json`
+- `confusion_*.png`
