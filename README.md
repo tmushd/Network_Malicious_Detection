@@ -7,16 +7,39 @@ This repository is a reproducible experimentation pipeline for malicious URL det
 It reproduces and compares against results from:
 Turk & Kilicaslan (2025), *Malicious URL Detection with Advanced Machine Learning and Optimization-Supported Deep Learning Models*.
 
-What this repo does (at a glance):
-- Problem: classify URLs as malicious (binary) and as specific malicious categories (multiclass)
-- Models: classical baselines on lexical features (`RF`, `XGB`, `LGBM`) plus a pretrained ELECTRA checkpoint (`bgspaditya/malurl-electra`)
-- Data: pulls a benchmark dataset from Hugging Face (`bgspaditya/byt-mal-minpro`) on first run
-- Repro artifacts: writes metrics tables, confusion matrices, and a markdown report suitable for a reproducibility appendix
+### At A Glance
+
+| Area | What this project does |
+| --- | --- |
+| Problem | Detects malicious URLs for security triage and automation |
+| Tasks | Binary classification (benign vs malicious) and multiclass classification (malicious categories) |
+| Dataset | Downloads a benchmark dataset on first run from Hugging Face (`bgspaditya/byt-mal-minpro`) |
+| Models | Classical baselines on lexical features (`RF`, `XGB`, `LGBM`) and ELECTRA checkpoint evaluation (`bgspaditya/malurl-electra`) |
+| Reproducibility | Single CLI entrypoint with fixed seed + controlled CPU usage |
+| Outputs | Metrics CSVs, confusion matrix images, and a markdown reproducibility report |
 
 Engineering highlights:
 - Single entrypoint CLI: `scripts/reproduce.py` (parameterized sizes, seed, CPU limits, and model switches)
 - Modular code layout under `src/network_malicious_detection/` (data, features, models, metrics, reporting)
 - Proof-first outputs in `outputs/reproducibility/` so results can be reviewed without rerunning training
+
+### What You Get Out of This Repo
+
+This is optimized as a portfolio-ready reproducibility project:
+- Runs end-to-end without manual data wrangling (downloads dataset + pretrained model weights automatically)
+- Produces “paper appendix” artifacts (tables + plots + a report) that are easy to attach to a write-up
+- Makes it easy to swap components (e.g., replace the checkpoint or baseline model code) without breaking the pipeline shape
+
+### Key Artifacts
+
+After a run, `outputs/reproducibility/` contains:
+- `metrics.csv`: per-task metrics for each model
+- `paper_comparison.csv`: paper vs reproduced comparison table (where applicable)
+- `reproducibility_report.md`: markdown summary for quick review
+- `confusion_*.png`: confusion matrices for each model/task
+
+Optional extension included (no extra setup required):
+- Week 12 hybrid fusion module (`src/network_malicious_detection/hybrid_fusion.py`) with proof artifacts under `proof/`
 
 ## Run
 
