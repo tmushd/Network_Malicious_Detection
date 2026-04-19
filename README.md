@@ -102,7 +102,7 @@ python scripts/reproduce.py --task both --train-size 2000 --val-size 300 --test-
 ```
 
 Terminal output:
-- The script prints a JSON summary at the end (metrics + artifact paths).
+- The script prints a metrics table + artifact paths, then a JSON summary at the end.
 - To disable JSON printing (e.g., for scripting), add `--no-print-json`.
 
 ### 4) Reproduce our run (exact command + code version)

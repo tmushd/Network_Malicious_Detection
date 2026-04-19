@@ -228,6 +228,36 @@ def main() -> None:
         print(f"Saved comparison: {output_dir / 'paper_comparison.csv'}")
     print(f"Saved report: {output_dir / 'reproducibility_report.md'}")
 
+    # Human-readable terminal summary for quick copy/paste proof on lab machines.
+    if not metrics_df.empty:
+        cols = [
+            "task",
+            "model",
+            "accuracy",
+            "precision",
+            "recall",
+            "f1_weighted",
+            "eval_rows",
+        ]
+        if "device" in metrics_df.columns:
+            cols.append("device")
+        print("\n=== Metrics Summary ===")
+        metrics_print = metrics_df[cols].astype(object).where(pd.notnull(metrics_df[cols]), "")
+        print(metrics_print.to_markdown(index=False))
+
+    if not comparison_df.empty:
+        print("\n=== Paper vs Reproduced (Abs Diff) ===")
+        print(comparison_df.to_markdown(index=False))
+
+    print("\n=== Artifacts ===")
+    print(str(output_dir / "metrics.csv"))
+    if not comparison_df.empty:
+        print(str(output_dir / "paper_comparison.csv"))
+    print(str(output_dir / "reproducibility_report.md"))
+    print(str(output_dir / "run_metadata.json"))
+    for p in sorted(output_dir.glob("confusion_*.png")):
+        print(str(p))
+
     if args.print_json:
         def _df_records(df: pd.DataFrame) -> list[dict]:
             if df.empty:
