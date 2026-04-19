@@ -2,15 +2,21 @@
 
 ## Repo
 
-Reproducible pipeline for the malicious URL detection results in:
-Türk & Kılıçaslan (2025), *Malicious URL Detection with Advanced Machine Learning and Optimization-Supported Deep Learning Models*.
+This repository is a reproducible experimentation pipeline for malicious URL detection, designed to make model evaluation and paper-style reporting easy to run, audit, and share.
 
-What’s in here:
-- Tasks: `binary` + `multiclass` malicious URL detection
-- Baselines (lexical URL features): `RF`, `XGB`, `LGBM`
-- Transformer checkpoint evaluation: ELECTRA (`bgspaditya/malurl-electra`)
-- Default dataset source: Hugging Face `bgspaditya/byt-mal-minpro` (downloaded on first run)
-- Main entrypoint: `scripts/reproduce.py` (writes all artifacts to `outputs/reproducibility/`)
+It reproduces and compares against results from:
+Turk & Kilicaslan (2025), *Malicious URL Detection with Advanced Machine Learning and Optimization-Supported Deep Learning Models*.
+
+What this repo does (at a glance):
+- Problem: classify URLs as malicious (binary) and as specific malicious categories (multiclass)
+- Models: classical baselines on lexical features (`RF`, `XGB`, `LGBM`) plus a pretrained ELECTRA checkpoint (`bgspaditya/malurl-electra`)
+- Data: pulls a benchmark dataset from Hugging Face (`bgspaditya/byt-mal-minpro`) on first run
+- Repro artifacts: writes metrics tables, confusion matrices, and a markdown report suitable for a reproducibility appendix
+
+Engineering highlights:
+- Single entrypoint CLI: `scripts/reproduce.py` (parameterized sizes, seed, CPU limits, and model switches)
+- Modular code layout under `src/network_malicious_detection/` (data, features, models, metrics, reporting)
+- Proof-first outputs in `outputs/reproducibility/` so results can be reviewed without rerunning training
 
 ## Run
 
