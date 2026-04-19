@@ -70,6 +70,15 @@ cd Network_Malicious_Detection
 ```
 
 ### 2) Environment setup (macOS)
+Install Homebrew:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+Then install LightGBM / XGBoost (required)
+
+```bash
+brew install libomp
+```
 
 ```bash
 python3 -m venv .venv
