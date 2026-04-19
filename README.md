@@ -101,6 +101,7 @@ Notes:
 - First run requires internet (downloads the dataset and the pretrained ELECTRA checkpoint from Hugging Face).
 - If `torch` fails to install from `requirements.txt`, install PyTorch first (per your CPU/GPU) and then re-run `pip install -r requirements.txt`.
 - Seeds are fixed (`--seed 42`), but some ML libraries can still show tiny metric differences across hardware/OS.
+- On some macOS Apple Silicon setups, `lightgbm`/`xgboost` can crash (native segfault). The pipeline will warn and skip those baselines so the run still completes (RF + ELECTRA still run).
 
 ### 3) Quick run (downsized, single command)
 

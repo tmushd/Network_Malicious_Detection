@@ -3,5 +3,6 @@
 data/
 outputs/
 .venv/
+.venv*/
 __pycache__/
 *.pyc

@@ -62,6 +62,26 @@ def main() -> None:
     start = time.time()
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Avoid stale artifacts when re-running into the same output directory.
+    for stale in (
+        "metrics.csv",
+        "paper_comparison.csv",
+        "reproducibility_report.md",
+        "run_metadata.json",
+    ):
+        try:
+            (output_dir / stale).unlink()
+        except FileNotFoundError:
+            pass
+        except Exception:
+            pass
+    for stale_path in output_dir.glob("confusion_*.png"):
+        try:
+            stale_path.unlink()
+        except Exception:
+            pass
+
     args.max_workers = max(1, min(int(args.max_workers), 8))
     for env_var in ("OMP_NUM_THREADS", "MKL_NUM_THREADS", "OPENBLAS_NUM_THREADS", "NUMEXPR_NUM_THREADS"):
         os.environ[env_var] = str(args.max_workers)
